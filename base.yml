@@ -1,0 +1,56 @@
+name: SpliterMax
+options:
+  bundleIdPrefix: com.splitter
+configs:
+  Debug-Splitter-DEV: debug
+  Release-Splitter-DEV: release
+settings:
+  configs:
+    Debug-Splitter-DEV:
+      ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+      EXCLUDED_SOURCE_FILE_NAMES: "*/Prod/* */Uat/*"
+      SWIFT_LINT_DIFF_ONLY: YES
+      SWIFT_LINT_AUTOCORRECT: NO
+
+    Release-Splitter-DEV:
+      ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+      EXCLUDED_SOURCE_FILE_NAMES: "*/Prod/* */Uat/*"
+      SWIFT_LINT_DIFF_ONLY: YES
+      SWIFT_LINT_AUTOCORRECT: NO
+targets:
+  Splitter:
+    type: application
+    platform: iOS
+    # entitlements:
+    #   path: Splitter/Splitter.entitlements
+    #   properties:
+    #     aps-environment: production
+    settings:
+      base:
+        INFOPLIST_FILE: SpliterMax/Info.plist
+        ASSETCATALOG_COMPILER_APPICON_NAME: $(inherited)
+        TARGETED_DEVICE_FAMILY: 1
+        SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD: NO
+        SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD: NO
+    deploymentTarget: 15.0
+    sources:
+      - path: SpliterMax
+        group: App
+# SplitterUnitTests:
+#   type: bundle.unit-test
+#   platform: iOS
+#   deploymentTarget: 14.0
+#   sources:
+#     - path: SplitterTests
+#       group: AppTests
+#   dependencies:
+#     - target: Splitter
+# SplitterUITests:
+#   type: bundle.ui-testing
+#   platform: iOS
+#   deploymentTarget: 14.0
+#   sources:
+#     - path: SplitterUITests
+#       group: AppTests
+#   settings:
+#     TEST_TARGET_NAME: Splitter
