@@ -36,6 +36,45 @@ targets:
     sources:
       - path: SpliterMax
         group: App
+        excludes:
+          - "**/{*.yml,.*.yml}"
+    dependencies:
+      - target: LocalizationKit
+    preBuildScripts:
+      - name: Swiftformat
+        basedOnDependencyAnalysis: false
+        script: sh tools/swiftformat.sh
+      - name: Swiftlint
+        basedOnDependencyAnalysis: false
+        script: sh tools/swiftlint.sh
+
+  LocalizationKit:
+    type: framework
+    platform: iOS
+    deploymentTarget: 14.0
+    sources:
+      - path: Shared/LocalizationKit
+        group: Shared
+        excludes:
+          - "**/{*.yml,.*.yml}"
+    info:
+      path: Shared/LocalizationKit/Info.plist
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.core.localizationkit
+        DEFINES_MODULE: false
+        PROVISIONING_PROFILE_SPECIFIER: ""
+        ASSETCATALOG_COMPILER_APPICON_NAME: ""
+    preBuildScripts:
+      - name: Swiftgen
+        basedOnDependencyAnalysis: false
+        script: "cd Shared/LocalizationKit && ../../tools/swiftgen config run --config swiftgen.yml"
+      - name: Swiftformat
+        basedOnDependencyAnalysis: false
+        script: cd Shared/LocalizationKit && sh ../../tools/swiftformat.sh
+      - name: Swiftlint
+        basedOnDependencyAnalysis: false
+        script: cd Shared/LocalizationKit && sh ../../tools/swiftlint.sh
 # SplitterUnitTests:
 #   type: bundle.unit-test
 #   platform: iOS

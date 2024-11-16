@@ -1,0 +1,13 @@
+/* 
+  Localizable.strings
+  SpliterMax
+
+  Created by Vikas Salian on 02/11/24.
+  
+*/
+
+"JailBreak.Message" = "This device is jailbroken, which can pose a security risk. Please use a secure device.";
+"JailBreak.AlertTitle" = "Security Alert";
+"JailBreak.AlertDesc" = "Jail Broken device detected";
+"Ok" = "Ok";
+"Cancel" = "Cancel";
