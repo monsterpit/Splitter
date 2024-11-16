@@ -39,7 +39,14 @@ targets:
         excludes:
           - "**/{*.yml,.*.yml}"
     dependencies:
+      - target: Domain
+      - target: Services
+      - target: Infrastructure
       - target: LocalizationKit
+      - target: Utils
+      - target: SharedCoreUI
+      - target: Explore
+
     preBuildScripts:
       - name: Swiftformat
         basedOnDependencyAnalysis: false
@@ -75,6 +82,197 @@ targets:
       - name: Swiftlint
         basedOnDependencyAnalysis: false
         script: cd Shared/LocalizationKit && sh ../../tools/swiftlint.sh
+  Domain:
+    type: framework
+    platform: iOS
+    deploymentTarget: 14.0
+    sources:
+      - path: Shared/Core/Domain
+        group: Shared
+        excludes:
+          - "**/{*.yml,.*.yml}"
+    info:
+      path: Shared/Core/Domain/Info.plist
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.core.domain
+        DEFINES_MODULE: false
+        PROVISIONING_PROFILE_SPECIFIER: ""
+        ASSETCATALOG_COMPILER_APPICON_NAME: ""
+    preBuildScripts:
+      - name: Swiftformat
+        basedOnDependencyAnalysis: false
+        script: cd Shared/Core/Domain && sh ../../../tools/swiftformat.sh
+      - name: Swiftlint
+        basedOnDependencyAnalysis: false
+        script: cd Shared/Core/Domain && sh ../../../tools/swiftlint.sh
+
+  Services:
+    type: framework
+    platform: iOS
+    deploymentTarget: 14.0
+    sources:
+      - path: Shared/Core/Services
+        group: Shared
+        excludes:
+          - "**/{*.yml,.*.yml}"
+    info:
+      path: Shared/Core/Services/Info.plist
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.core.services
+        DEFINES_MODULE: false
+        PROVISIONING_PROFILE_SPECIFIER: ""
+        ASSETCATALOG_COMPILER_APPICON_NAME: ""
+    preBuildScripts:
+      - name: Swiftformat
+        basedOnDependencyAnalysis: false
+        script: cd Shared/Core/Services && sh ../../../tools/swiftformat.sh
+      - name: Swiftlint
+        basedOnDependencyAnalysis: false
+        script: cd Shared/Core/Services && sh ../../../tools/swiftlint.sh
+    dependencies:
+      - target: Domain
+
+  Infrastructure:
+    type: framework
+    platform: iOS
+    deploymentTarget: 14.0
+    sources:
+      - path: Shared/Core/Infrastructure
+        group: Shared
+        excludes:
+          - "**/{*.yml,.*.yml}"
+    info:
+      path: Shared/Core/Infrastructure/Info.plist
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.core.infrastructure
+        DEFINES_MODULE: false
+        PROVISIONING_PROFILE_SPECIFIER: ""
+        ASSETCATALOG_COMPILER_APPICON_NAME: ""
+    preBuildScripts:
+      - name: Swiftformat
+        basedOnDependencyAnalysis: false
+        script: cd Shared/Core/Infrastructure && sh ../../../tools/swiftformat.sh
+      - name: Swiftlint
+        basedOnDependencyAnalysis: false
+        script: cd Shared/Core/Infrastructure && sh ../../../tools/swiftlint.sh
+    dependencies:
+      - target: Services
+      - target: Domain
+
+  Utils:
+    type: framework
+    platform: iOS
+    deploymentTarget: 14.0
+    sources:
+      - path: Shared/Utils
+        group: Shared
+        excludes:
+          - "**/{*.yml,.*.yml}"
+    info:
+      path: Shared/Utils/Info.plist
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.core.utils
+        DEFINES_MODULE: false
+        PROVISIONING_PROFILE_SPECIFIER: ""
+        ASSETCATALOG_COMPILER_APPICON_NAME: ""
+    dependencies:
+      - target: Services
+      - target: Domain
+    preBuildScripts:
+      - name: Swiftformat
+        basedOnDependencyAnalysis: false
+        script: cd Shared/Utils && sh ../../tools/swiftformat.sh
+      - name: Swiftlint
+        basedOnDependencyAnalysis: false
+        script: cd Shared/Utils && sh ../../tools/swiftlint.sh
+
+  SharedCoreUI:
+    type: framework
+    platform: iOS
+    deploymentTarget: 14.0
+    sources:
+      - path: Shared/SharedCoreUI
+        group: Shared
+        excludes:
+          - "**/{*.yml,.*.yml}"
+    info:
+      path: Shared/SharedCoreUI/Info.plist
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.core.sharedcoreui
+        DEFINES_MODULE: false
+        PROVISIONING_PROFILE_SPECIFIER: ""
+        ASSETCATALOG_COMPILER_APPICON_NAME: ""
+    dependencies:
+      - target: Services
+      - target: LocalizationKit
+      - target: Utils
+    preBuildScripts:
+      - name: Swiftformat
+        basedOnDependencyAnalysis: false
+        script: cd Shared/SharedCoreUI && sh ../../tools/swiftformat.sh
+      - name: Swiftlint
+        basedOnDependencyAnalysis: false
+        script: cd Shared/SharedCoreUI && sh ../../tools/swiftlint.sh
+  Explore:
+    type: framework
+    platform: iOS
+    deploymentTarget: 14.0
+    sources:
+      - path: Shared/Explore
+        group: Shared
+        excludes:
+          - "**/{*.yml,.*.yml}"
+    info:
+      path: Shared/Explore/Info.plist
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.core.explore
+        DEFINES_MODULE: false
+        PROVISIONING_PROFILE_SPECIFIER: ""
+        ASSETCATALOG_COMPILER_APPICON_NAME: ""
+    preBuildScripts:
+      - name: Swiftformat
+        basedOnDependencyAnalysis: false
+        script: cd Shared/Explore && sh ../../tools/swiftformat.sh
+      - name: Swiftlint
+        basedOnDependencyAnalysis: false
+        script: cd Shared/Explore && sh ../../tools/swiftlint.sh
+    dependencies:
+      - target: SharedCoreUI
+
+  # CoreUI:
+  #   type: framework
+  #   platform: iOS
+  #   deploymentTarget: 14.0
+  #   sources:
+  #     - path: Shared/CoreUI
+  #       group: Shared
+  #       excludes:
+  #         - "**/{*.yml,.*.yml}"
+  #   info:
+  #     path: Shared/CoreUI/Info.plist
+  #   settings:
+  #     base:
+  #       PRODUCT_BUNDLE_IDENTIFIER: com.core.coreui
+  #       DEFINES_MODULE: false
+  #       PROVISIONING_PROFILE_SPECIFIER: ""
+  #       ASSETCATALOG_COMPILER_APPICON_NAME: ""
+  #   preBuildScripts:
+  #     - name: Swiftformat
+  #       basedOnDependencyAnalysis: false
+  #       script: cd Shared/CoreUI && sh ../../tools/swiftformat.sh
+  #     - name: Swiftlint
+  #       basedOnDependencyAnalysis: false
+  #       script: cd Shared/CoreUI && sh ../../tools/swiftlint.sh
+  #   dependencies:
+  #     - target: Services
+  #     - target: LocalizationKit
+  #     - target: Utils
 # SplitterUnitTests:
 #   type: bundle.unit-test
 #   platform: iOS

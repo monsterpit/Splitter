@@ -5,6 +5,7 @@
 //  Created by Vikas Salian on 01/11/24.
 //
 
+import SharedCoreUI
 import UIKit
 
 /// All the top-level coordinators should conform to this protocol

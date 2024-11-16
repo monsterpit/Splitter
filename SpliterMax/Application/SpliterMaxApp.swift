@@ -5,6 +5,7 @@
 //  Created by Vikas Salian on 27/10/24.
 //
 //
+import SharedCoreUI
 import SwiftUI
 
 @main

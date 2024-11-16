@@ -6,6 +6,8 @@
 //
 
 import Foundation
+import Infrastructure
+import Services
 
 final class LogAnalyticsProvider: AnalyticsProviderProtocol {
     static let id = "LogAnalytics"

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Utils
 
 extension ScreenName {
     static var main: Self { .selfName() }

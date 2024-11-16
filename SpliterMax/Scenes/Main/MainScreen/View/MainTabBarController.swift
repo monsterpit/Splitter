@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Utils
 
 final class MainTabBarController: BaseTabBarController {
     private let viewModel: MainViewModelProtocol

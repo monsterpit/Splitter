@@ -7,6 +7,7 @@
 
 import Foundation
 import LocalizationKit
+import SharedCoreUI
 
 protocol JailBreakViewNavigationProtocol {}
 

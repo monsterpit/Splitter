@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SharedCoreUI
 import SwiftUI
 
 /// Common image provider for generic images and brand images that share the same name

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Services
 
 extension AnalyticsEnvironment {
     init(environment: Environment) {

@@ -4,8 +4,8 @@
 //
 //  Created by Vikas Salian on 02/11/24.
 //
-
 import LocalizationKit
+import SharedCoreUI
 import SwiftUI
 
 struct JailBreakView<ViewModel: JailBreakViewModelProtocol>: View, ViewControllableProtocol {

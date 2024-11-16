@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Infrastructure
 import UIKit
 
 protocol SDKInitializableProtocol {

@@ -4,8 +4,11 @@
 //
 //  Created by Vikas Salian on 01/11/24.
 //
-
+import Domain
 import Foundation
+import Infrastructure
+import Services
+import Utils
 
 final class AppAssembler {
     private(set) var rootViewModel: RootViewModel

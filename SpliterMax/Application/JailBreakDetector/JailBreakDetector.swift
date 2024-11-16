@@ -5,6 +5,7 @@
 //  Created by Vikas Salian on 01/11/24.
 //
 
+import Infrastructure
 import UIKit
 
 enum JailBreakDetector {

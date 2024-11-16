@@ -4,7 +4,7 @@
 //
 //  Created by Vikas Salian on 16/11/24.
 //
-
+import SharedCoreUI
 import UIKit
 
 struct BrandFontProvider: FontProviderProtocol {
