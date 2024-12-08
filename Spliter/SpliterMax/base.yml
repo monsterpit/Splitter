@@ -1,0 +1,421 @@
+name: SpliterMax
+options:
+  bundleIdPrefix: com.splitter
+configs:
+  Debug-Splitter-Test: debug
+  Release-Splitter-Test: release
+  Debug-Splitter-UAT: debug
+  Release-Splitter-UAT: release
+  Debug-Splitter-PROD: debug
+  Release-Splitter-PROD: release
+settings:
+  # base:
+  #   DEVELOPMENT_TEAM: 9S452ZZ2W5
+  #   CODE_SIGN_STYLE: Manual
+  configs:
+    Debug-Splitter-Test:
+      ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+      EXCLUDED_SOURCE_FILE_NAMES: "*/Prod/* */Uat/*"
+      SWIFT_LINT_DIFF_ONLY: YES
+      SWIFT_LINT_AUTOCORRECT: NO
+
+    Release-Splitter-Test:
+      ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+      EXCLUDED_SOURCE_FILE_NAMES: "*/Prod/* */Uat/*"
+      SWIFT_LINT_DIFF_ONLY: YES
+      SWIFT_LINT_AUTOCORRECT: NO
+
+    Debug-Splitter-UAT:
+      ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+      EXCLUDED_SOURCE_FILE_NAMES: "*/Prod/* */Test/*"
+      SWIFT_LINT_DIFF_ONLY: YES
+      SWIFT_LINT_AUTOCORRECT: NO
+
+    Release-Splitter-UAT:
+      ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+      EXCLUDED_SOURCE_FILE_NAMES: "*/Prod/* */Test/*"
+      SWIFT_LINT_DIFF_ONLY: YES
+      SWIFT_LINT_AUTOCORRECT: NO
+
+    Debug-Splitter-PROD:
+      ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+      EXCLUDED_SOURCE_FILE_NAMES: "*/Test/* */Uat/*"
+      SWIFT_LINT_DIFF_ONLY: YES
+      SWIFT_LINT_AUTOCORRECT: NO
+
+    Release-Splitter-PROD:
+      ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+      EXCLUDED_SOURCE_FILE_NAMES: "*/Test/* */Uat/*"
+      SWIFT_LINT_DIFF_ONLY: YES
+      SWIFT_LINT_AUTOCORRECT: NO
+targets:
+  Splitter:
+    type: application
+    platform: iOS
+    # entitlements:
+    #   path: Splitter/Splitter.entitlements
+    #   properties:
+    #     aps-environment: production
+    settings:
+      base:
+        ASSETCATALOG_COMPILER_APPICON_NAME: $(inherited)
+        TARGETED_DEVICE_FAMILY: 1
+        SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD: NO
+        SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD: NO
+    deploymentTarget: 15.0
+    sources:
+      - path: SpliterMax
+        group: App
+        excludes:
+          - Resources/Branded
+          - Configuration/Firebase/Branded
+          - "**/{*.yml,.*.yml}"
+    dependencies:
+      - target: Domain
+      - target: Services
+      - target: Infrastructure
+      - target: LocalizationKit
+      - target: Utils
+      - target: SharedCoreUI
+      - target: Explore
+
+    preBuildScripts:
+      - name: Swiftformat
+        basedOnDependencyAnalysis: false
+        script: sh ../../tools/swiftformat.sh
+      - name: Swiftlint
+        basedOnDependencyAnalysis: false
+        script: sh ../../tools/swiftlint.sh
+
+  LocalizationKit:
+    type: framework
+    platform: iOS
+    deploymentTarget: 14.0
+    sources:
+      - path: ../../Shared/LocalizationKit
+        group: Shared
+        excludes:
+          - "**/{*.yml,.*.yml}"
+    info:
+      path: ../../Shared/LocalizationKit/Info.plist
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.core.localizationkit
+        DEFINES_MODULE: false
+        PROVISIONING_PROFILE_SPECIFIER: ""
+        ASSETCATALOG_COMPILER_APPICON_NAME: ""
+    preBuildScripts:
+      - name: Swiftgen
+        basedOnDependencyAnalysis: false
+        script: "cd ../../Shared/LocalizationKit && ../../tools/swiftgen config run --config swiftgen.yml"
+      - name: Swiftformat
+        basedOnDependencyAnalysis: false
+        script: cd ../../Shared/LocalizationKit && sh ../../tools/swiftformat.sh
+      - name: Swiftlint
+        basedOnDependencyAnalysis: false
+        script: cd ../../Shared/LocalizationKit && sh ../../tools/swiftlint.sh
+  Domain:
+    type: framework
+    platform: iOS
+    deploymentTarget: 14.0
+    sources:
+      - path: ../../Shared/Core/Domain
+        group: Shared
+        excludes:
+          - "**/{*.yml,.*.yml}"
+    info:
+      path: ../../Shared/Core/Domain/Info.plist
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.core.domain
+        DEFINES_MODULE: false
+        PROVISIONING_PROFILE_SPECIFIER: ""
+        ASSETCATALOG_COMPILER_APPICON_NAME: ""
+    preBuildScripts:
+      - name: Swiftformat
+        basedOnDependencyAnalysis: false
+        script: cd ../../Shared/Core/Domain && sh ../../../tools/swiftformat.sh
+      - name: Swiftlint
+        basedOnDependencyAnalysis: false
+        script: cd ../../Shared/Core/Domain && sh ../../../tools/swiftlint.sh
+
+  Services:
+    type: framework
+    platform: iOS
+    deploymentTarget: 14.0
+    sources:
+      - path: ../../Shared/Core/Services
+        group: Shared
+        excludes:
+          - "**/{*.yml,.*.yml}"
+    info:
+      path: ../../Shared/Core/Services/Info.plist
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.core.services
+        DEFINES_MODULE: false
+        PROVISIONING_PROFILE_SPECIFIER: ""
+        ASSETCATALOG_COMPILER_APPICON_NAME: ""
+    preBuildScripts:
+      - name: Swiftformat
+        basedOnDependencyAnalysis: false
+        script: cd ../../Shared/Core/Services && sh ../../../tools/swiftformat.sh
+      - name: Swiftlint
+        basedOnDependencyAnalysis: false
+        script: cd ../../Shared/Core/Services && sh ../../../tools/swiftlint.sh
+    dependencies:
+      - target: Domain
+
+  Infrastructure:
+    type: framework
+    platform: iOS
+    deploymentTarget: 14.0
+    sources:
+      - path: ../../Shared/Core/Infrastructure
+        group: Shared
+        excludes:
+          - "**/{*.yml,.*.yml}"
+    info:
+      path: ../../Shared/Core/Infrastructure/Info.plist
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.core.infrastructure
+        DEFINES_MODULE: false
+        PROVISIONING_PROFILE_SPECIFIER: ""
+        ASSETCATALOG_COMPILER_APPICON_NAME: ""
+    preBuildScripts:
+      - name: Swiftformat
+        basedOnDependencyAnalysis: false
+        script: cd ../../Shared/Core/Infrastructure && sh ../../../tools/swiftformat.sh
+      - name: Swiftlint
+        basedOnDependencyAnalysis: false
+        script: cd ../../Shared/Core/Infrastructure && sh ../../../tools/swiftlint.sh
+    dependencies:
+      - target: Services
+      - target: Domain
+
+  Utils:
+    type: framework
+    platform: iOS
+    deploymentTarget: 14.0
+    sources:
+      - path: ../../Shared/Utils
+        group: Shared
+        excludes:
+          - "**/{*.yml,.*.yml}"
+    info:
+      path: ../../Shared/Utils/Info.plist
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.core.utils
+        DEFINES_MODULE: false
+        PROVISIONING_PROFILE_SPECIFIER: ""
+        ASSETCATALOG_COMPILER_APPICON_NAME: ""
+    dependencies:
+      - target: Services
+      - target: Domain
+    preBuildScripts:
+      - name: Swiftformat
+        basedOnDependencyAnalysis: false
+        script: cd ../../Shared/Utils && sh ../../tools/swiftformat.sh
+      - name: Swiftlint
+        basedOnDependencyAnalysis: false
+        script: cd ../../Shared/Utils && sh ../../tools/swiftlint.sh
+
+  SharedCoreUI:
+    type: framework
+    platform: iOS
+    deploymentTarget: 14.0
+    sources:
+      - path: ../../Shared/SharedCoreUI
+        group: Shared
+        excludes:
+          - "**/{*.yml,.*.yml}"
+    info:
+      path: ../../Shared/SharedCoreUI/Info.plist
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.core.sharedcoreui
+        DEFINES_MODULE: false
+        PROVISIONING_PROFILE_SPECIFIER: ""
+        ASSETCATALOG_COMPILER_APPICON_NAME: ""
+    dependencies:
+      - target: Services
+      - target: LocalizationKit
+      - target: Utils
+    preBuildScripts:
+      - name: Swiftformat
+        basedOnDependencyAnalysis: false
+        script: cd ../../Shared/SharedCoreUI && sh ../../tools/swiftformat.sh
+      - name: Swiftlint
+        basedOnDependencyAnalysis: false
+        script: cd ../../Shared/SharedCoreUI && sh ../../tools/swiftlint.sh
+
+  SharedCoreUIKitTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: ../../Shared/Tests/SharedCoreUIKitTests
+        group: Shared/Tests
+    info:
+      path: ../../Shared/Tests/SharedCoreUIKitTests/Info.plist
+    dependencies:
+      - target: LocalizationKit
+      - target: SharedCoreUI
+  Explore:
+    type: framework
+    platform: iOS
+    deploymentTarget: 14.0
+    sources:
+      - path: ../../Shared/Explore
+        group: Shared
+        excludes:
+          - "**/{*.yml,.*.yml}"
+    info:
+      path: ../../Shared/Explore/Info.plist
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.core.explore
+        DEFINES_MODULE: false
+        PROVISIONING_PROFILE_SPECIFIER: ""
+        ASSETCATALOG_COMPILER_APPICON_NAME: ""
+    preBuildScripts:
+      - name: Swiftformat
+        basedOnDependencyAnalysis: false
+        script: cd ../../Shared/Explore && sh ../../tools/swiftformat.sh
+      - name: Swiftlint
+        basedOnDependencyAnalysis: false
+        script: cd ../../Shared/Explore && sh ../../tools/swiftlint.sh
+    dependencies:
+      - target: SharedCoreUI
+
+  ExploreTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: ../../Shared/Tests/ExploreTests
+        group: Shared/Tests
+    info:
+      path: ../../Shared/Tests/ExploreTests/Info.plist
+    dependencies:
+      - target: Explore
+      - target: LocalizationKit
+      - target: CoreSharedTestKit
+
+  InfrastructureTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: ../../Shared/Tests/InfrastructureTests
+        group: Shared/Tests
+    info:
+      path: ../../Shared/Tests/InfrastructureTests/Info.plist
+    dependencies:
+      - target: Infrastructure
+      - target: CoreSharedTestKit
+
+  DomainTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: ../../Shared/Tests/DomainTests
+        group: Shared/Tests
+    info:
+      path: ../../Shared/Tests/DomainTests/Info.plist
+    dependencies:
+      - target: Domain
+      - target: CoreSharedTestKit
+
+  ServicesTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: ../../Shared/Tests/ServicesTests
+        group: Shared/Tests
+    info:
+      path: ../../Shared/Tests/ServicesTests/Info.plist
+    dependencies:
+      - target: Services
+      - target: CoreSharedTestKit
+
+  CoreSharedTestKit:
+    type: framework
+    platform: iOS
+    deploymentTarget: 14.0
+    sources:
+      - path: ../../Shared/Tests/CoreSharedTestKit
+        group: Shared/Tests
+    info:
+      path: ../../Shared/Tests/CoreSharedTestKit/Info.plist
+    dependencies:
+      - sdk: XCTest.framework
+      - target: SharedCoreUI
+      - target: Utils
+      - target: Domain
+      - target: Infrastructure
+      - target: Services
+
+schemes:
+  Spliter-Test:
+    build:
+      targets:
+        Splitter: all
+    run:
+      config: Debug-Splitter-Test
+    test:
+      gatherCoverageData: true
+      config: Debug-Splitter-Test
+      targets:
+        - InfrastructureTests
+        - DomainTests
+        - ServicesTests
+        - ExploreTests
+      language: "en"
+    archive:
+      config: Release-Splitter-Test
+    profile:
+      config: Release-Splitter-Test
+    analyze:
+      config: Debug-Splitter-Test
+  Splitter-UAT:
+    build:
+      targets:
+        Splitter: all
+    run:
+      config: Debug-Splitter-UAT
+    test:
+      gatherCoverageData: true
+      config: Debug-Splitter-UAT
+      targets:
+        - InfrastructureTests
+        - DomainTests
+        - ServicesTests
+        - ExploreTests
+      language: "en"
+    archive:
+      config: Release-Splitter-UAT
+    profile:
+      config: Release-Splitter-UAT
+    analyze:
+      config: Debug-Splitter-UAT
+  Splitter-PROD:
+    build:
+      targets:
+        Splitter: all
+    run:
+      config: Debug-Splitter-PROD
+    test:
+      gatherCoverageData: true
+      config: Debug-Splitter-PROD
+      targets:
+        - InfrastructureTests
+        - DomainTests
+        - ServicesTests
+        - ExploreTests
+      language: "en"
+    archive:
+      config: Release-Splitter-PROD
+    profile:
+      config: Release-Splitter-PROD
+    analyze:
+      config: Debug-Splitter-PROD

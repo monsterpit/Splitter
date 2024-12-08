@@ -36,7 +36,9 @@ final class AppAssembler {
 
         rootViewModel = RootViewModel(coordinator: coordinator)
 
-        let applicationSessionRepository = ApplicationSessionRepository(storage: ApplicationSessionStorage(keyValueStorage: StoragesAssembly.userDefault), authRepository: AuthRepository(), appName: Environment.appName)
+        let applicationSessionRepository = ApplicationSessionRepository(storage: ApplicationSessionStorage(keyValueStorage: StoragesAssembly.userDefault),
+                                                                        authRepository: AuthRepository(),
+                                                                        appName: Environment.appName)
 
         appSessionService = ApplicationSessionService(repository: applicationSessionRepository)
     }

@@ -10,11 +10,6 @@ import SwiftUI
 
 @main
 struct SpliterMaxApp: App {
-//    var body: some Scene {
-//        WindowGroup {
-//            ContentView()
-//        }
-//    }
 
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
 
