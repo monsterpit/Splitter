@@ -7,6 +7,7 @@
 
 import SharedCoreUI
 import SwiftUI
+import Utils
 
 struct LaunchView<ViewModel: LaunchViewModelProtocol>: View, ViewControllableProtocol {
     var holder: ViewControllerHolder = .init()

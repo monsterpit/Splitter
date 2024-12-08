@@ -7,6 +7,7 @@
 import LocalizationKit
 import SharedCoreUI
 import SwiftUI
+import Utils
 
 struct JailBreakView<ViewModel: JailBreakViewModelProtocol>: View, ViewControllableProtocol {
     var holder: ViewControllerHolder = .init()

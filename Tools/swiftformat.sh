@@ -34,7 +34,7 @@ if [ "${ENABLE_PREVIEWS}" != "YES" ]; then
         echo "Applying SwiftFormat to $FILE"
 
         # Run SwiftFormat on the current Swift file
-        SCRIPT_INPUT_FILE_COUNT=1 SCRIPT_INPUT_FILE_0=$FILE $SRCROOT/Tools/swiftformat  "$CURRENT_FOLDER/$FILE"
+        SCRIPT_INPUT_FILE_COUNT=1 SCRIPT_INPUT_FILE_0=$FILE $SRCROOT/../../Tools/swiftformat "$CURRENT_FOLDER/$FILE"
     done
     
 fi

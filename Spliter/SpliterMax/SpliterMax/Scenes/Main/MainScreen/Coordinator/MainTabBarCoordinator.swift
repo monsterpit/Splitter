@@ -6,10 +6,11 @@
 //
 
 import UIKit
+import Utils
 
 enum MainTab: Int {
     case explore, trips, wallet, profile
-    
+
     var index: Int {
         rawValue
     }
@@ -17,13 +18,11 @@ enum MainTab: Int {
 
 protocol MainTabCoordinatorProtocol {
     var tab: MainTab { get }
-    
+
     func handle(activity: MainTabActivity)
 }
 
-enum MainTabActivity {
-
-}
+enum MainTabActivity {}
 
 protocol MainTabBarCoordinatorProtocol: ParentCoordinatorProtocol {
     func addTabCoordinator(_ coordinator: MainTabCoordinatorProtocol)
@@ -32,11 +31,11 @@ protocol MainTabBarCoordinatorProtocol: ParentCoordinatorProtocol {
 
 final class MainTabBarCoordinator: ParentCoordinator {
     private var tabCoordinators: [MainTab: MainTabCoordinatorProtocol] = [:]
-    
+
     private var tabbarController: UITabBarController? {
         viewHolder as? UITabBarController
     }
-    
+
     init(parentCoordinator: RootCoordinatorProtocol?) {
         super.init(parentCoordinator: parentCoordinator)
     }
@@ -46,7 +45,7 @@ extension MainTabBarCoordinator: MainTabBarCoordinatorProtocol {
     func addTabCoordinator(_ coordinator: any MainTabCoordinatorProtocol) {
         tabCoordinators[coordinator.tab] = coordinator
     }
-    
+
     func navigateToTab(_ tab: MainTab, with activity: MainTabActivity?) {
         if let viewController = tabbarController?.viewControllers?[safe: tab.index] {
             tabbarController?.selectedViewController = viewController

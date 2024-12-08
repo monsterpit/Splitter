@@ -6,6 +6,7 @@
 //
 import SharedCoreUI
 import SwiftUI
+import Utils
 
 public struct ExploreView: ViewControllableProtocol {
     public var holder: ViewControllerHolder = .init()

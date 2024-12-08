@@ -6,6 +6,8 @@
 //
 
 import Foundation
+import SharedCoreUI
+import Utils
 
 final class JailBreakCoordinator: ParentCoordinator {
     private let rootCoordinator: RootCoordinatorProtocol

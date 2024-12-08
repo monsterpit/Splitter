@@ -6,10 +6,11 @@
 //
 
 import Foundation
+import Utils
 
 final class LaunchCoordinator: ParentCoordinator {
     private let rootCoordinator: RootCoordinatorProtocol
-    
+
     init(rootCoordinator: RootCoordinatorProtocol) {
         self.rootCoordinator = rootCoordinator
         super.init(parentCoordinator: rootCoordinator)
