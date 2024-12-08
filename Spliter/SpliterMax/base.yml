@@ -57,10 +57,10 @@ targets:
   Splitter:
     type: application
     platform: iOS
-    # entitlements:
-    #   path: Splitter/Splitter.entitlements
-    #   properties:
-    #     aps-environment: production
+    entitlements:
+      path: SpliterMax/SpliterMax.entitlements
+      properties:
+        aps-environment: production
     settings:
       base:
         ASSETCATALOG_COMPILER_APPICON_NAME: $(inherited)
