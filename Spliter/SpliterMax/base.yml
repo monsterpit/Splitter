@@ -81,6 +81,7 @@ targets:
       - target: Utils
       - target: SharedCoreUI
       - target: Explore
+      - target: Currency
 
     preBuildScripts:
       - name: Swiftformat
@@ -302,6 +303,46 @@ targets:
       path: ../../Shared/Tests/ExploreTests/Info.plist
     dependencies:
       - target: Explore
+      - target: LocalizationKit
+      - target: CoreSharedTestKit
+
+  Currency:
+    type: framework
+    platform: iOS
+    deploymentTarget: 14.0
+    sources:
+      - path: ../../Shared/Currency
+        group: Shared
+        excludes:
+          - "**/{*.yml,.*.yml}"
+    info:
+      path: ../../Shared/Currency/Info.plist
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.core.currency
+        DEFINES_MODULE: false
+        PROVISIONING_PROFILE_SPECIFIER: ""
+        ASSETCATALOG_COMPILER_APPICON_NAME: ""
+    preBuildScripts:
+      - name: Swiftformat
+        basedOnDependencyAnalysis: false
+        script: cd ../../Shared/Currency && sh ../../tools/swiftformat.sh
+      - name: Swiftlint
+        basedOnDependencyAnalysis: false
+        script: cd ../../Shared/Currency && sh ../../tools/swiftlint.sh
+    dependencies:
+      - target: SharedCoreUI
+
+  CurrencyTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: ../../Shared/Tests/CurrencyTests
+        group: Shared/Tests
+    info:
+      path: ../../Shared/Tests/CurrencyTests/Info.plist
+    dependencies:
+      - target: Currency
       - target: LocalizationKit
       - target: CoreSharedTestKit
 
