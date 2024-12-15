@@ -17,19 +17,18 @@ extension AppConfigurationProtocol {
 }
 
 enum Environment {
-    case prod, uat, dev
+    case prod, uat, test
 
     static var current: Environment {
-        // #if PROD
-//        return .prod
-        // #endif
-        // #if DEV
-//        return .dev
-        // #endif
-        // #if UAT
-//        return .uat
-        // #endif
-        .dev
+        #if PROD
+            return .prod
+        #endif
+        #if TEST
+            return .test
+        #endif
+        #if UAT
+            return .uat
+        #endif
     }
 
     var name: String {
@@ -38,8 +37,8 @@ enum Environment {
             "prod"
         case .uat:
             "uat"
-        case .dev:
-            "dev"
+        case .test:
+            "test"
         }
     }
 

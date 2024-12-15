@@ -10,37 +10,37 @@ targets:
           PRODUCT_BUNDLE_IDENTIFIER: "com.splitter.base.test"
           PROVISIONING_PROFILE_SPECIFIER: match Development com.splitter.base.dev
           CODE_SIGN_IDENTITY: Apple Development
-          APP_DISPLAY_NAME: "Priority Pass Dev"
-          OTHER_SWIFT_FLAGS: "-DDEBUG -DDEV -DBRAND_SP"
+          APP_DISPLAY_NAME: "Splitter TEST"
+          OTHER_SWIFT_FLAGS: "-DDEBUG -DTEST -DBRAND_SP"
         Release-Splitter-Test:
           PRODUCT_BUNDLE_IDENTIFIER: "com.splitter.base.test"
           PROVISIONING_PROFILE_SPECIFIER: match Development com.splitter.base.dev
           CODE_SIGN_IDENTITY: Apple Development
-          APP_DISPLAY_NAME: "Priority Pass Dev"
-          OTHER_SWIFT_FLAGS: "-DRELEASE -DDEV -DBRAND_SP"
+          APP_DISPLAY_NAME: "Splitter TEST"
+          OTHER_SWIFT_FLAGS: "-DRELEASE -DTEST -DBRAND_SP"
         Debug-Splitter-UAT:
           PRODUCT_BUNDLE_IDENTIFIER: "com.splitter.base.uat"
           PROVISIONING_PROFILE_SPECIFIER: match Development com.splitter.base.uat
           CODE_SIGN_IDENTITY: Apple Development
-          APP_DISPLAY_NAME: "Priority Pass Uat"
+          APP_DISPLAY_NAME: "Splitter Uat"
           OTHER_SWIFT_FLAGS: "-DDEBUG -DUAT -DBRAND_SP"
         Release-Splitter-UAT:
           PRODUCT_BUNDLE_IDENTIFIER: "com.splitter.base.uat"
           PROVISIONING_PROFILE_SPECIFIER: match AdHoc com.splitter.base.uat
           CODE_SIGN_IDENTITY: Apple Distribution
-          APP_DISPLAY_NAME: "Priority Pass Uat"
+          APP_DISPLAY_NAME: "Splitter Uat"
           OTHER_SWIFT_FLAGS: "-DRELEASE -DUAT -DBRAND_SP"
         Debug-Splitter-PROD:
           PRODUCT_BUNDLE_IDENTIFIER: "com.splitter.base"
           PROVISIONING_PROFILE_SPECIFIER: match AppStore com.splitter.base
           CODE_SIGN_IDENTITY: Apple Distribution
-          APP_DISPLAY_NAME: "Priority Pass"
+          APP_DISPLAY_NAME: "Splitter"
           OTHER_SWIFT_FLAGS: "-DDEBUG -DPROD -DBRAND_SP"
         Release-Splitter-PROD:
           PRODUCT_BUNDLE_IDENTIFIER: "com.splitter.base"
           PROVISIONING_PROFILE_SPECIFIER: match AppStore com.splitter.base
           CODE_SIGN_IDENTITY: Apple Distribution
-          APP_DISPLAY_NAME: "Priority Pass"
+          APP_DISPLAY_NAME: "Splitter"
           OTHER_SWIFT_FLAGS: "-DRELEASE -DPROD -DBRAND_SP"
     sources:
       - path: SpliterMax

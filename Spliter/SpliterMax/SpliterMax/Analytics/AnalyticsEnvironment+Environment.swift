@@ -15,8 +15,8 @@ extension AnalyticsEnvironment {
             self = .prod
         case .uat:
             self = .uat
-        case .dev:
-            self = .dev
+        case .test:
+            self = .test
         }
     }
 }
