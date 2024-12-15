@@ -8,6 +8,8 @@ import LocalizationKit
 import Services
 import SharedCoreUI
 import SwiftUI
+import Swinject
+import SwinjectAutoregistration
 import UIKit
 import Utils
 
@@ -15,31 +17,24 @@ extension ScreenName {
     static var currency: Self { .selfName() }
 }
 
-struct CurrencyAssembly {
-    var currencyTab: TabContainerView
+struct CurrencyAssembly: Assembly {
+    func assemble(container: Container) {
+        container.register(TabViewProtocol.self,
+                           name: ScreenName.currency.rawValue)
+        { (resolver, coordinator: MainTabBarCoordinatorProtocol) in
 
-    init(config: CurrencyScreenConfiguration) {
-//        let currencyView = CurrencyView()
-//        let wow = UIImage(named: "globe")
-//        // UIImage(systemName: "house.fill") ??
-//        currencyTab = TabContainerView(tabTitle: "explore",
-//                                      tabImage: UIImage(resource: .Help.Info.bold),
-//                                      tabImageSelected: UIImage(resource: .Help.Info.bold))
-//        {
-//            currencyView
-//        }
+            let configFactory = CurrencyModuleConfigurationFactory(resolver: resolver)
+            let factory = CurrencyModuleFactory(configFactory: configFactory)
+            let externalCoordinator = CurrencyExternalCoordinator(parentCoordinator: coordinator, screenFactory: nil)
+            let view = factory.create(coordinator: externalCoordinator).start(route: .root)
+            externalCoordinator.viewHolder = view.holder
 
-        let configFactory = CurrencyModuleConfigurationFactory()
-        let factory = CurrencyModuleFactory(configFactory: configFactory)
-        let externalCoordinator = CurrencyExternalCoordinator(parentCoordinator: config.coordinator, screenFactory: nil)
-        let view = factory.create(coordinator: externalCoordinator).start(route: .root)
-        externalCoordinator.viewHolder = view.holder
-
-        currencyTab = TabContainerView(tabTitle: StringConstants.ok,
-                                       tabImage: UIImage(resource: .Help.Info.bold),
-                                       tabImageSelected: UIImage(resource: .Help.Info.bold))
-        {
-            view
+            return TabContainerView(tabTitle: StringConstants.ok,
+                                    tabImage: UIImage(resource: .Help.Info.bold),
+                                    tabImageSelected: UIImage(resource: .Help.Info.bold))
+            {
+                view
+            }
         }
     }
 }
@@ -50,12 +45,14 @@ extension CurrencyAssembly {
     }
 
     struct CurrencyModuleConfigurationFactory: CurrencyModuleConfigurationFactoryProtocol {
+        let resolver: Resolver
+
         var logger: LoggerProtocol {
-            LoggerAssembly.logger
+            resolver ~> (LoggerProtocol.self, name: LoggersAssembly.LoggerName.composer)
         }
 
         var analyticsService: AnalyticsServiceProtocol {
-            Application.shared.assembler.analyticsService
+            resolver~>
         }
     }
 }

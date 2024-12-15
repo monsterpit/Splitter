@@ -8,54 +8,25 @@ import Domain
 import Foundation
 import Infrastructure
 import Services
+import Swinject
+import SwinjectAutoregistration
 import Utils
 
 final class AppAssembler {
-    private(set) var rootViewModel: RootViewModel
-    private(set) var coordinator: RootCoordinator
-    private(set) var appSessionService: ApplicationSessionServiceProtocol
-    private(set) var userService: UserService
-    private(set) var analyticsService: AnalyticsService
-    let logger = LoggerAssembly.logger
-    let restAPIClient: RestAPIClient
+    private(set) lazy var appSessionService: ApplicationSessionServiceProtocol = assembler.resolver~>
+    private(set) lazy var rootViewModel: RootViewModel = assembler.resolver~>
+    private(set) lazy var coordinator: RootCoordinator = assembler.resolver~>
 
-    init() {
-        let loggerProvider = LogAnalyticsProvider(logger: logger)
-        analyticsService = AnalyticsService(providers: [loggerProvider], environment: .init(environment: Environment.current))
-        let screenViewTracker = ScreenViewTracker(analytics: analyticsService)
-        let networkMonitor = NetworkMonitorRepository()
-
-        let appState = AppState(viewLoadTracker: ViewLoadTracker(delegate: screenViewTracker), networkMonitor: networkMonitor)
-
-        let userStorage = UserKeychainStorage(keychainStorage: StoragesAssembly.keychain, userDefaultsStorage: StoragesAssembly.userDefault)
-
-        let userRepository = UserRepository(logger: logger, storage: userStorage)
-
-        userService = UserService(repository: userRepository)
-
-        coordinator = RootCoordinator(appState: appState,
-                                      logger: logger)
-
-        rootViewModel = RootViewModel(coordinator: coordinator)
-
-        let applicationSessionRepository = ApplicationSessionRepository(storage: ApplicationSessionStorage(keyValueStorage: StoragesAssembly.userDefault),
-                                                                        authRepository: AuthRepository(),
-                                                                        appName: Environment.appName)
-
-        appSessionService = ApplicationSessionService(repository: applicationSessionRepository)
-
-        let networkAssembly = NetworkAssembly()
-        restAPIClient = networkAssembly.restAPIClient
-    }
+    let assembler: Assembler = .init(assemblies)
 }
 
-// private extension AppAssembler {
-//    static var assemblies: [Assembly] {
-//        [
-//            InfrastructureAssembler.assemblies,
-//            [ServicesAssembly()],
-//            [RootScreenAssembly(), SignupFlowAssembly()],
-//            MainScreensAssembly.assemblies
-//        ].flatMap { $0 }
-//    }
-// }
+private extension AppAssembler {
+    static var assemblies: [Assembly] {
+        [
+            InfrastructureAssembler.assemblies,
+            [ServicesAssembly()],
+            [RootScreenAssembly()],
+            MainScreensAssembly.assemblies,
+        ].flatMap { $0 }
+    }
+}

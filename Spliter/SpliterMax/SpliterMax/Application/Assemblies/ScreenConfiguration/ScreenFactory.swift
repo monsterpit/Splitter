@@ -5,7 +5,8 @@
 //  Created by Vikas Salian on 01/11/24.
 //
 
-// TODO: Vikas check if we need it
+import Swinject
+import SwinjectAutoregistration
 import UIKit
 
 protocol ScreenFactoryProtocol {
@@ -14,15 +15,13 @@ protocol ScreenFactoryProtocol {
 }
 
 struct ScreenFactory: ScreenFactoryProtocol {
-//    let resolver: Resolver
+    let resolver: Resolver
 
-    func assemble(_: ScreenName, configuration _: some Any) -> UIViewController? {
-//        resolver.resolve(UIViewController.self, name: name.rawValue, argument: configuration)
-        return nil
+    func assemble(_ name: ScreenName, configuration: some Any) -> UIViewController? {
+        resolver.resolve(UIViewController.self, name: name.rawValue, argument: configuration)
     }
 
-    func assemble(_: ScreenName) -> UIViewController? {
-//        resolver.resolve(UIViewController.self, name: name.rawValue)
-        return nil
+    func assemble(_ name: ScreenName) -> UIViewController? {
+        resolver.resolve(UIViewController.self, name: name.rawValue)
     }
 }

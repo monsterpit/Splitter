@@ -5,13 +5,20 @@
 import Foundation
 import Infrastructure
 import Swinject
+import SwinjectAutoregistration
 
-struct NetworkAssembly {
-    let restAPIClient: RestAPIClient
-    init() {
-        let networkService = NetworkServiceUrlSession(urlSession: URLSession.shared)
-        restAPIClient = RestAPIClient(baseURL: Environment.configuration.gatewayUrl, networkService: networkService)
+struct NetworkAssembly: Assembly {
+    func assemble(container: Container) {
+        registerRestApi(container: container)
     }
 
-    private mutating func registerRestApi() {}
+    private func registerRestApi(container: Container) {
+        container.register(NetworkRestServiceProtocol.self) { _ in
+            NetworkServiceUrlSession(urlSession: URLSession.shared)
+        }
+        container.register(NetworkApiClientProtocol.self) { resolver in
+            RestAPIClient(baseURL: Environment.configuration.gatewayUrl, networkService: resolver~>)
+        }
+        .inObjectScope(.weak)
+    }
 }

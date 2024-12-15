@@ -32,14 +32,17 @@ final class RootCoordinator: ParentCoordinator {
 
     private var cancellable: AnyCancellable?
     private let logger: LoggerProtocol?
+    private let screenFactory: ScreenFactoryProtocol
 
     private var cancellables: Set<AnyCancellable> = []
 
     init(appState: AppState,
+         screenFactory: ScreenFactoryProtocol,
 //         authService: UserAuthenticationServiceAsyncProtocol,
          logger: LoggerProtocol?)
     {
         self.appState = appState
+        self.screenFactory = screenFactory
 //        self.authService = authService
         self.logger = logger
         super.init(parentCoordinator: nil)
@@ -82,7 +85,7 @@ final class RootCoordinator: ParentCoordinator {
 }
 
 extension RootCoordinator: RootCoordinatorProtocol {
-    func changeState(_ state: RootCoordinatorState, animated: Bool) {
+    func changeState(_ state: RootCoordinatorState, animated _: Bool) {
         // cleanup existing coordinators because changing rootView is not observed in views hierarchy
         removeAllChildCoordinators()
         cancellable = nil
@@ -92,19 +95,14 @@ extension RootCoordinator: RootCoordinatorProtocol {
         switch state {
         case .jailBreak:
             let config = ScreenConfiguration(coordinator: self as RootCoordinatorProtocol)
-
-            let coordinator = JailBreakCoordinator(rootCoordinator: config.coordinator)
-            let viewModel = JailBreakViewModel(coordinator: coordinator)
-            let view = JailBreakView(viewModel: viewModel)
-            coordinator.viewHolder = view.holder
-            viewHolder = view.viewController
+            screenFactory.assemble(.jailBreak, configuration: config).flatMap { view in
+                viewHolder = view
+            }
         case .launch:
             let config = ScreenConfiguration(coordinator: self as RootCoordinatorProtocol)
-            let coordinator = LaunchCoordinator(rootCoordinator: config.coordinator)
-            let viewModel = LaunchViewModel(coordinator: coordinator, userService: Application.shared.assembler.userService)
-            let view = LaunchView(viewModel: viewModel)
-            coordinator.viewHolder = view.holder
-            viewHolder = view.viewController
+            screenFactory.assemble(.launch, configuration: config).flatMap { view in
+                viewHolder = view
+            }
         case let .login(state):
             let signupState = switch state {
             case .landing:
@@ -113,12 +111,12 @@ extension RootCoordinator: RootCoordinatorProtocol {
             viewHolder = SignupFlowCoordinator(parentCoordinator: self).start(route: signupState)
         case .main:
             let config = MainScreenConfiguration(coordinator: self)
-            let tabView = MainScreensAssembly(config: config).mainTabViews
-
-            let navigationController = BaseNavigationController(rootViewController: tabView)
-            navigationController.navigationBar.applyStyle(.default)
-            navigationController.setNavigationBarHidden(true, animated: false)
-            viewHolder = navigationController
+            screenFactory.assemble(.main, configuration: config).flatMap { view in
+                let navigationController = BaseNavigationController(rootViewController: view)
+                navigationController.navigationBar.applyStyle(.default)
+                navigationController.setNavigationBarHidden(true, animated: false)
+                viewHolder = navigationController
+            }
             // observe logout
             //            cancellable = authService.isAuthenticatedPublisher
             //                .dropFirst()

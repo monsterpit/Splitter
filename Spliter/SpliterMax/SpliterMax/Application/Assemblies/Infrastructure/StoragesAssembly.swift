@@ -7,14 +7,32 @@
 
 import Foundation
 import Infrastructure
+import Swinject
+import SwinjectAutoregistration
 
-enum StoragesAssembly {
-    static var keychain: KeyValueStorageProtocol {
-        KeychainStorage(service: keyChainServiceName)
+struct StoragesAssembly: Assembly {
+    func assemble(container: Container) {
+        container.register(KeyValueStorageProtocol.self, name: KeyValueStorageType.keychain) { _ in
+            KeychainStorage(service: Self.keyChainServiceName)
+        }
+        .inObjectScope(.weak)
+
+        container.register(KeyValueStorageProtocol.self, name: KeyValueStorageType.userDefaults) { _ in
+            UserDefaultsStorage()
+        }
+        .inObjectScope(.weak)
+
+        container.register(ApplicationSessionStorageProtocol.self) { resolver in
+            ApplicationSessionStorage(keyValueStorage: userDefaultsStorage(resolver: resolver))
+        }
     }
 
-    static var userDefault: KeyValueStorageProtocol {
-        UserDefaultsStorage()
+    private func userDefaultsStorage(resolver: Resolver) -> KeyValueStorageProtocol {
+        resolver ~> (KeyValueStorageProtocol.self, name: KeyValueStorageType.userDefaults)
+    }
+
+    private func keychainStorage(resolver: Resolver) -> KeyValueStorageProtocol {
+        resolver ~> (KeyValueStorageProtocol.self, name: KeyValueStorageType.keychain)
     }
 }
 

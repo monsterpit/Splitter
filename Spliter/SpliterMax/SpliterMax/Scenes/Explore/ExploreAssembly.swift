@@ -8,24 +8,29 @@
 import Explore
 import SharedCoreUI
 import SwiftUI
+import Swinject
+import SwinjectAutoregistration
 import UIKit
+import Utils
 
 extension ScreenName {
     static var explore: Self { .selfName() }
 }
 
-struct ExploreAssembly {
-    var exploreTab: TabContainerView
+struct ExploreAssembly: Assembly {
+    func assemble(container: Container) {
+        container.register(TabViewProtocol.self,
+                           name: ScreenName.explore.rawValue)
+        { (_, _: MainTabBarCoordinatorProtocol) in
 
-    init() {
-        let exploreView = ExploreView()
-        let wow = UIImage(named: "globe")
-        // UIImage(systemName: "house.fill") ??
-        exploreTab = TabContainerView(tabTitle: "explore",
-                                      tabImage: UIImage(resource: .Help.Info.bold),
-                                      tabImageSelected: UIImage(resource: .Help.Info.bold))
-        {
-            exploreView
+            let exploreView = ExploreView()
+
+            return TabContainerView(tabTitle: "explore",
+                                    tabImage: UIImage(resource: .Help.Info.bold),
+                                    tabImageSelected: UIImage(resource: .Help.Info.bold))
+            {
+                exploreView
+            }
         }
     }
 }
