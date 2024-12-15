@@ -84,6 +84,10 @@ targets:
       - target: SharedCoreUI
       - target: Explore
       - target: Currency
+      - package: Swinject
+        product: Swinject
+      - package: SwinjectAutoregistration
+        product: SwinjectAutoregistration
 
     preBuildScripts:
       - name: Swiftformat

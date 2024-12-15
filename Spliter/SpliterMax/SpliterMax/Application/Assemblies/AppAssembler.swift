@@ -15,11 +15,13 @@ final class AppAssembler {
     private(set) var coordinator: RootCoordinator
     private(set) var appSessionService: ApplicationSessionServiceProtocol
     private(set) var userService: UserService
+    private(set) var analyticsService: AnalyticsService
     let logger = LoggerAssembly.logger
+    let restAPIClient: RestAPIClient
 
     init() {
         let loggerProvider = LogAnalyticsProvider(logger: logger)
-        let analyticsService = AnalyticsService(providers: [loggerProvider], environment: .init(environment: Environment.current))
+        analyticsService = AnalyticsService(providers: [loggerProvider], environment: .init(environment: Environment.current))
         let screenViewTracker = ScreenViewTracker(analytics: analyticsService)
         let networkMonitor = NetworkMonitorRepository()
 
@@ -41,6 +43,9 @@ final class AppAssembler {
                                                                         appName: Environment.appName)
 
         appSessionService = ApplicationSessionService(repository: applicationSessionRepository)
+
+        let networkAssembly = NetworkAssembly()
+        restAPIClient = networkAssembly.restAPIClient
     }
 }
 

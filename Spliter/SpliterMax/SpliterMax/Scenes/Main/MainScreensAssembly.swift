@@ -13,24 +13,29 @@ extension ScreenName {
 }
 
 struct MainScreensAssembly {
-    private static var exploreAssembly: ExploreAssembly { ExploreAssembly() }
+    private var exploreAssembly: ExploreAssembly
+    private var currencyAssembly: CurrencyAssembly
+
     let mainTabViews: MainTabBarController
 
     init(config: MainScreenConfiguration) {
+        exploreAssembly = ExploreAssembly()
+        currencyAssembly = CurrencyAssembly(config: CurrencyAssembly.CurrencyScreenConfiguration(coordinator: config.coordinator))
+
         let mainTabbarCoordinator = MainTabBarCoordinator(parentCoordinator: config.coordinator)
         let mainViewModel = MainViewModel(coordinator: mainTabbarCoordinator)
         mainTabViews = MainTabBarController(viewModel: mainViewModel)
         mainTabbarCoordinator.viewHolder = mainTabViews
-        let tabs = MainScreensAssembly.tabViews(coordinator: mainTabbarCoordinator)
+        let tabs = tabViews(coordinator: mainTabbarCoordinator)
             .sorted { $0.0.index < $1.0.index }
             .map(\.1)
         mainTabViews.setTabViews(tabs)
     }
 
-    static func tabViews(coordinator _: MainTabBarCoordinatorProtocol) -> [(MainTab, TabViewProtocol)] {
+    func tabViews(coordinator _: MainTabBarCoordinatorProtocol) -> [(MainTab, TabViewProtocol)] {
         [
             (.explore, exploreAssembly.exploreTab),
-            (.trips, exploreAssembly.exploreTab),
+            (.currency, currencyAssembly.currencyTab),
             (.wallet, exploreAssembly.exploreTab),
             (.profile, exploreAssembly.exploreTab),
         ]

@@ -9,7 +9,7 @@ import UIKit
 import Utils
 
 enum MainTab: Int {
-    case explore, trips, wallet, profile
+    case explore, currency, wallet, profile
 
     var index: Int {
         rawValue

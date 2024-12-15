@@ -7,22 +7,31 @@
 
 import Foundation
 
+protocol AppConfigurationProtocol {
+    var appDisplayName: String { get }
+    var gatewayUrl: String { get }
+}
+
+extension AppConfigurationProtocol {
+    var appDisplayName: String { Bundle.main.object(forInfoDictionaryKey: "CFBundleDisplayName") as? String ?? "" }
+}
+
 enum Environment {
     case prod, uat, dev
-    
+
     static var current: Environment {
-//#if PROD
+        // #if PROD
 //        return .prod
-//#endif
-//#if DEV
+        // #endif
+        // #if DEV
 //        return .dev
-//#endif
-//#if UAT
+        // #endif
+        // #if UAT
 //        return .uat
-//#endif
-        return .dev
+        // #endif
+        .dev
     }
-    
+
     var name: String {
         switch self {
         case .prod:
@@ -33,20 +42,20 @@ enum Environment {
             "dev"
         }
     }
-    
+
     static var currentBrand: AppBrand {
-        //TODO: check how is this flags managed
-#if BRAND_PP
-        return .Sliptter
-#elseif BRAND_VISA
-        return .SliptterPro
+        // TODO: check how is this flags managed
+        #if BRAND_PP
+            return .Sliptter
+        #elseif BRAND_VISA
+            return .SliptterPro
         #else
-        return .Sliptter
-#endif
+            return .Sliptter
+        #endif
     }
-    
+
     static var appName: String {
-        //TODO: Vikas check this values
+        // TODO: Vikas check this values
         switch currentBrand {
         case .Sliptter:
             "priority_pass"
@@ -54,14 +63,16 @@ enum Environment {
             "visa_airport_experience"
         }
     }
-    
-    
+
+    static var configuration: AppConfigurationProtocol {
+        AppConfiguration()
+    }
 }
 
 enum AppBrand {
     case Sliptter
     case SliptterPro
-    
+
     var capabilities: ProductCapability {
         switch self {
         case .Sliptter:
